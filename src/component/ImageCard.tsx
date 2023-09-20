@@ -15,7 +15,11 @@ const Img = styled.img`
     border-radius: 4px;
 `;
 
-const ImageCard = ({ imgData, onClick }) => {
+type ImageCardProps = {
+    imgData: any;
+    onClick?: () => void;
+};
+const ImageCard = ({ imgData, onClick }: ImageCardProps) => {
     const { webformatURL, id } = imgData;
     return (
         <Card onClick={onClick}>
