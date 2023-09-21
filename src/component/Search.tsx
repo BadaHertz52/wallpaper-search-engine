@@ -5,6 +5,7 @@ import SearchTag from './SearchTag';
 import SearchOption from './SearchOption';
 import { HeroProps } from './Hero';
 import { getImgData } from '../fn';
+import { storageKey } from '../storageKey';
 
 const SearchTagContainer = styled.div`
     display: flex;
@@ -50,7 +51,7 @@ const SearchOptionButton = styled.p`
 type SearchProps = HeroProps;
 const Search = (props: SearchProps) => {
     const { setData } = props;
-    const storageKey = 'searchWords';
+    const key = storageKey.searchWords;
     const [searchOption, setSearchOption] = useState<boolean>(false);
     const [keyword, setKeyword] = useState<string>('');
     const [searchWords, setSearchWords] = useState<string[]>();
@@ -103,20 +104,19 @@ const Search = (props: SearchProps) => {
     };
     // 로컬스토리지에 저장된 최근 검색어 적용
     useEffect(() => {
-        const item = localStorage.getItem(storageKey);
+        const item = localStorage.getItem(key);
         if (item) {
             setSearchWords(JSON.parse(item) as string[]);
         }
-    }, []);
+    }, [key]);
     // 최근 검색어 상태 변경 시, 로컬 스토리지에 반영
     useEffect(() => {
         if (searchWords) {
-            localStorage.setItem(storageKey, JSON.stringify(searchWords));
+            localStorage.setItem(key, JSON.stringify(searchWords));
         } else {
-            localStorage.getItem(storageKey) &&
-                localStorage.removeItem(storageKey);
+            localStorage.getItem(key) && localStorage.removeItem(key);
         }
-    }, [searchWords]);
+    }, [searchWords, key]);
     return (
         <>
             <SearchBoxContainer>
