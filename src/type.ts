@@ -1,26 +1,3 @@
-export type Orientation = 'all' | 'horizontal' | 'vertical';
-export type Order = 'popular' | 'latest';
-export type PerPage = 10 | 20 | 30;
-export type Search = {
-    keyword?: string;
-    /**
-     * 기본값 :all
-     */
-    orientation: Orientation;
-    /**
-     * 기본값: popular
-     */
-    order: Order;
-    /**
-     * 요청하는 페이지 ,기본값1
-     */
-    page: number;
-    /**
-     *  한 페이지당 몇개의 결과 제공 , 기본값 20
-     */
-    perPage: PerPage; //
-};
-
 export type ImgData = {
     id: number;
     pageURL: string;
