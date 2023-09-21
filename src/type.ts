@@ -1,3 +1,9 @@
+export type Option = {
+    order: string;
+    orientation: string;
+    perPage: string;
+    page: number | string;
+};
 export type ImgData = {
     id: number;
     pageURL: string;

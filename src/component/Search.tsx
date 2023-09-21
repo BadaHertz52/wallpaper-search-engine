@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../asset/search.svg';
 import SearchTag from './SearchTag';
 import SearchOption from './SearchOption';
+import { HeroProps } from './Hero';
+import { getImgData } from '../fn';
 
 const SearchTagContainer = styled.div`
     display: flex;
@@ -45,14 +47,12 @@ const SearchOptionButton = styled.p`
     text-decoration: underline;
     color: #5e5e5e;
 `;
-
-const Search = () => {
+type SearchProps = HeroProps;
+const Search = (props: SearchProps) => {
+    const { setData } = props;
     const storageKey = 'searchWords';
-
     const [searchOption, setSearchOption] = useState<boolean>(false);
-
     const [keyword, setKeyword] = useState<string>('');
-
     const [searchWords, setSearchWords] = useState<string[]>();
 
     const toggleSearchOption = () => {
@@ -82,7 +82,7 @@ const Search = () => {
         setKeyword(text);
     };
 
-    const handleKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyUp = async (event: KeyboardEvent<HTMLInputElement>) => {
         const code = event.code;
         if (code === 'Enter' && keyword) {
             //최근 검색어 추가
@@ -93,16 +93,22 @@ const Search = () => {
             // input 창 빈문자
             setKeyword('');
             // 검색
+            const data = await getImgData(keyword);
+            if (data instanceof Error || !data.totalHits) {
+                setData(null);
+            } else {
+                setData(data);
+            }
         }
     };
-
+    // 로컬스토리지에 저장된 최근 검색어 적용
     useEffect(() => {
         const item = localStorage.getItem(storageKey);
         if (item) {
             setSearchWords(JSON.parse(item) as string[]);
         }
     }, []);
-
+    // 최근 검색어 상태 변경 시, 로컬 스토리지에 반영
     useEffect(() => {
         if (searchWords) {
             localStorage.setItem(storageKey, JSON.stringify(searchWords));

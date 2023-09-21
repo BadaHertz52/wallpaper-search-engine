@@ -43,6 +43,7 @@ const SearchOption = () => {
                             name="order"
                             id="popular"
                             value="popular"
+                            checked
                         />
                         <label htmlFor="popular">인기순</label>
                     </form>
@@ -55,6 +56,7 @@ const SearchOption = () => {
                             name="orientation"
                             id="all"
                             value="all"
+                            checked
                         />
                         <label htmlFor="all">모두</label>
                         <input
@@ -88,6 +90,7 @@ const SearchOption = () => {
                             name="per_page"
                             id="20"
                             value={20}
+                            checked
                         />
                         <label htmlFor="20">20</label>
                         <input

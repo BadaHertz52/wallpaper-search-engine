@@ -24,8 +24,8 @@ function App() {
     return (
         <>
             <Container>
-                <Hero />
-                <ResultContainer />
+                <Hero setData={setData} />
+                <ResultContainer data={data} />
                 <Footer />
                 <ToggleThemeButton />
             </Container>

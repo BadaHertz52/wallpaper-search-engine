@@ -26,7 +26,7 @@ const PageSelect = styled.select`
 
 const Pagination = () => {
     return (
-        <Nav>
+        <Nav id="pagination">
             <PrevIcon width="24" cursor="pointer" fill="var(--text)" />
             {`총 10 중 `}
             <PageSelect name="page">
