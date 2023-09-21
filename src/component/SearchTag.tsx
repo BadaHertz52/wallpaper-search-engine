@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ReactComponent as DeleteIcon } from '../asset/delete.svg';
+import { Dispatch, SetStateAction } from 'react';
 
 const Tag = styled.div`
     display: flex;
@@ -22,12 +23,22 @@ const TagLabel = styled.span`
         text-decoration: underline;
     }
 `;
-
-const SearchTag = () => {
+type SearchTagProps = {
+    word: string;
+    setSearchWords: Dispatch<SetStateAction<string[] | undefined>>;
+    setKeyword: Dispatch<SetStateAction<string>>;
+};
+const SearchTag = ({ word, setSearchWords, setKeyword }: SearchTagProps) => {
+    const deleteTag = () => {
+        setSearchWords((prev) => {
+            const newWords = prev?.filter((i) => i !== word);
+            return newWords?.[0] === undefined ? undefined : newWords;
+        });
+    };
     return (
         <Tag>
-            <TagLabel>최근 검색어</TagLabel>
-            <DeleteIcon width="12px" />
+            <TagLabel onClick={() => setKeyword(word)}>{word}</TagLabel>
+            <DeleteIcon width="12px" onClick={deleteTag} />
         </Tag>
     );
 };

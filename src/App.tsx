@@ -5,7 +5,7 @@ import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
 import { useState } from 'react';
-import { ModalState, ResponseData, Search } from './type';
+import { ModalState, ResponseData } from './type';
 import DummyData from './asset/dummyData';
 
 const Container = styled.div`
@@ -15,16 +15,8 @@ const Container = styled.div`
 `;
 
 function App() {
-    const initialSearch: Search = {
-        keyword: undefined,
-        orientation: 'all',
-        order: 'popular',
-        page: 1,
-        perPage: 20,
-    };
-    const [search, setSearch] = useState<Search>(initialSearch);
     const [data, setData] = useState<ResponseData | null>(DummyData);
-    const [searchWords, setSearchWords] = useState<string[]>();
+
     const [modal, setModal] = useState<ModalState>({
         open: false,
         targetImgData: undefined,
