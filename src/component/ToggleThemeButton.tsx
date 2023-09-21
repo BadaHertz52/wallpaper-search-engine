@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as LightIcon } from '../asset/light.svg';
 import { ReactComponent as DarkIcon } from '../asset/dark.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Button = styled.div`
     position: fixed;
@@ -28,7 +28,10 @@ const ToggleThemeButton = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
     };
-
+    const rootEl = document.getElementById('root');
+    useEffect(() => {
+        rootEl?.classList.toggle('dark', theme === 'dark');
+    }, [theme, rootEl]);
     return (
         <Button onClick={toggleTheme}>
             {theme === 'light' ? (

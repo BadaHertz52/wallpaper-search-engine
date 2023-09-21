@@ -9,3 +9,10 @@ html {
     --overlay: #8ac8ff;
     --text: black;
 }
+
+.dark {
+    --primary: ##1e1f21;
+    --secondary: #292a2d;
+    --highlight: #4cabff;
+    --text: #ffffff;
+}
