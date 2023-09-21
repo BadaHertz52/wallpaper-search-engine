@@ -89,7 +89,7 @@ const Search = (props: SearchProps) => {
             //최근 검색어 추가
             !searchWords?.includes(keyword) &&
                 setSearchWords((prev) =>
-                    prev ? prev.concat(keyword) : [keyword]
+                    prev ? [keyword, ...prev] : [keyword]
                 );
             // input 창 빈문자
             setKeyword('');
