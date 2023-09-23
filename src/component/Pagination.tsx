@@ -56,7 +56,12 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
     };
     return (
         <Nav id="pagination">
-            <PrevIcon width="24" cursor="pointer" fill="var(--text)" />
+            <PrevIcon
+                width="24"
+                cursor="pointer"
+                fill="var(--text)"
+                style={{ display: option.page === 1 ? 'none' : 'block' }}
+            />
             <PageSelectContainer>
                 <div>총 {pages.length} 중</div>
                 <PageSelect name="page" onChange={handleChange}>
@@ -68,7 +73,14 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 </PageSelect>
                 페이지
             </PageSelectContainer>
-            <NextIcon width="24" cursor="pointer" fill="var(--text)" />
+            <NextIcon
+                width="24"
+                cursor="pointer"
+                fill="var(--text)"
+                style={{
+                    display: option.page === pages.length ? 'none' : 'block',
+                }}
+            />
         </Nav>
     );
 };
