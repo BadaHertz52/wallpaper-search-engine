@@ -41,12 +41,14 @@ const ResultContainer = ({
         <Container>
             {/* ImgCard 클릭 시 해당 이미지의 정보로 ImageModal이 나타나야 합니다. */}
             {/* <ImageModal /> */}
-            <Pagination
-                pages={pages}
-                option={option}
-                setOption={setOption}
-                setData={setData}
-            />
+            {data && (
+                <Pagination
+                    pages={pages}
+                    option={option}
+                    setOption={setOption}
+                    setData={setData}
+                />
+            )}
             <ResultsWrapper>
                 {data ? (
                     data.hits?.map((imgData) => (
