@@ -32,7 +32,7 @@ const ResultContainer = ({
 }: ResultContainerProps) => {
     const pageLength: number = !data
         ? 0
-        : Math.round(data.total / Number(data.hits.length || 20));
+        : Math.round(data.totalHits / Number(data.hits.length || 20));
     /**
      * api 요청 후에 생기는 페이지 번호를 요소로하는 배열
      */
