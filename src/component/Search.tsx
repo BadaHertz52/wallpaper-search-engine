@@ -1,4 +1,10 @@
-import { ChangeEvent, useState, KeyboardEvent, useEffect } from 'react';
+import {
+    ChangeEvent,
+    useState,
+    KeyboardEvent,
+    useEffect,
+    useCallback,
+} from 'react';
 import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../asset/search.svg';
 import SearchTag from './SearchTag';
@@ -59,7 +65,7 @@ const Search = (props: SearchProps) => {
     const toggleSearchOption = () => {
         setSearchOption((prev) => !prev);
     };
-    const changeEscapeChars = (str: string) => {
+    const changeEscapeChars = useCallback((str: string) => {
         switch (str) {
             case '&':
                 return '&amp;';
@@ -74,34 +80,40 @@ const Search = (props: SearchProps) => {
             default:
                 return str;
         }
-    };
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        //XSS 공격 방어
-        const text = event.target.value.replaceAll(/[&<>"']/g, (t) =>
-            changeEscapeChars(t)
-        );
-        setKeyword(text);
-    };
+    }, []);
+    const handleChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            //XSS 공격 방어
+            const text = event.target.value.replaceAll(/[&<>"']/g, (t) =>
+                changeEscapeChars(t)
+            );
+            setKeyword(text);
+        },
+        [changeEscapeChars]
+    );
 
-    const handleKeyUp = async (event: KeyboardEvent<HTMLInputElement>) => {
-        const code = event.code;
-        if (code === 'Enter' && keyword) {
-            //최근 검색어 추가
-            !searchWords?.includes(keyword) &&
-                setSearchWords((prev) =>
-                    prev ? [keyword, ...prev] : [keyword]
-                );
-            // input 창 빈문자
-            setKeyword('');
-            // 검색
-            const data = await getImgData(keyword);
-            if (data instanceof Error || !data.totalHits) {
-                setData(null);
-            } else {
-                setData(data);
+    const handleKeyUp = useCallback(
+        async (event: KeyboardEvent<HTMLInputElement>) => {
+            const code = event.code;
+            if (code === 'Enter' && keyword) {
+                //최근 검색어 추가
+                !searchWords?.includes(keyword) &&
+                    setSearchWords((prev) =>
+                        prev ? [keyword, ...prev] : [keyword]
+                    );
+                // input 창 빈문자
+                setKeyword('');
+                // 검색
+                const data = await getImgData(keyword, option);
+                if (data instanceof Error || !data.totalHits) {
+                    setData(null);
+                } else {
+                    setData(data);
+                }
             }
-        }
-    };
+        },
+        [option, keyword, searchWords, setData]
+    );
     // 로컬스토리지에 저장된 최근 검색어 적용
     useEffect(() => {
         const item = localStorage.getItem(key);
