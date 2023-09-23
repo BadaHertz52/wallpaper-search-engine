@@ -50,7 +50,7 @@ const SearchOptionButton = styled.p`
 `;
 type SearchProps = HeroProps;
 const Search = (props: SearchProps) => {
-    const { setData } = props;
+    const { setData, setOption, option } = props;
     const key = storageKey.searchWords;
     const [searchOption, setSearchOption] = useState<boolean>(false);
     const [keyword, setKeyword] = useState<string>('');
@@ -132,7 +132,9 @@ const Search = (props: SearchProps) => {
                         검색 옵션 {searchOption ? '닫기' : '열기'}
                     </SearchOptionButton>
                 </SearchInputContainer>
-                {searchOption && <SearchOption />}
+                {searchOption && (
+                    <SearchOption option={option} setOption={setOption} />
+                )}
             </SearchBoxContainer>
             <SearchTagContainer>
                 {searchWords &&

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Search from './Search';
 import { Dispatch, SetStateAction } from 'react';
-import { ResponseData } from '../type';
+import { Option, ResponseData } from '../type';
 
 const Container = styled.div`
     position: relative;
@@ -40,6 +40,8 @@ const Content = styled.div`
 
 export type HeroProps = {
     setData: Dispatch<SetStateAction<ResponseData | null>>;
+    option: Option;
+    setOption: Dispatch<SetStateAction<Option>>;
 };
 const Hero = (props: HeroProps) => {
     return (
@@ -49,7 +51,11 @@ const Hero = (props: HeroProps) => {
                     <HeroTitleLink href="./">배경화면 검색 엔진</HeroTitleLink>
                 </HeroTitle>
                 <HeroSubtitle>오늘 나의 배경화면은? 👀</HeroSubtitle>
-                <Search setData={props.setData} />
+                <Search
+                    setData={props.setData}
+                    option={props.option}
+                    setOption={props.setOption}
+                />
             </Content>
         </Container>
     );
