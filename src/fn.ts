@@ -11,7 +11,7 @@ const getUrl = (keyword: string, option: Option) => {
         `&orientation=${option.orientation}`,
         `&order=${option.order}`,
         `&page=${option.page}`,
-        `$per_page${option.perPage}`,
+        `&per_page=${option.perPage}`,
         '&image_type=photo',
     ].join('');
 };
@@ -38,5 +38,5 @@ export const getImgData = async (
     //api 요청 및 data 값 업데이트
     const url = getUrl(keyword, option);
     const data = await getData(url);
-    return data instanceof Error ? data : { ...data, option: option };
+    return data;
 };
