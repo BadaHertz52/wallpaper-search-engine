@@ -105,7 +105,10 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 cursor="pointer"
                 fill="var(--text)"
                 style={{
-                    display: option.page === pages.length ? 'none' : 'block',
+                    display:
+                        option.page === pages.length || option.page === 1
+                            ? 'none'
+                            : 'block',
                 }}
                 onClick={() => handleClickIcon('next')}
             />
