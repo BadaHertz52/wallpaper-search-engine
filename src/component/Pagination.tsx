@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as PrevIcon } from '../asset/prev.svg';
 import { ReactComponent as NextIcon } from '../asset/next.svg';
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useCallback } from 'react';
 import { Option, ResponseData } from '../type';
 import { getImgData } from '../fn';
 import { storageKey } from '../storageKey';
@@ -38,12 +38,11 @@ type PaginationProps = {
     setOption: Dispatch<SetStateAction<Option>>;
 };
 const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
-    const handleChange = async (event: ChangeEvent<HTMLSelectElement>) => {
-        const value = Number(event.target.value);
-        if (value !== option.page) {
+    const updateData = useCallback(
+        async (page: number) => {
             const newOption = {
                 ...(JSON.parse(JSON.stringify(option)) as Option),
-                page: value,
+                page: page,
             };
             setOption(newOption);
             const recentKeywords = localStorage.getItem(storageKey.searchWords);
@@ -52,8 +51,31 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 : 'dog';
             const data = await getImgData(keyword, newOption);
             setData(data instanceof Error ? null : data);
-        }
-    };
+        },
+        [option, setOption, setData]
+    );
+
+    const handleChange = useCallback(
+        async (event: ChangeEvent<HTMLSelectElement>) => {
+            const value = Number(event.target.value);
+            if (value !== option.page) {
+                await updateData(value);
+            }
+        },
+        [updateData, option.page]
+    );
+    const handleClickIcon = useCallback(
+        async (icon: string) => {
+            let page = option.page;
+            if (icon === 'prev') {
+                --page;
+            } else {
+                ++page;
+            }
+            await updateData(page);
+        },
+        [option.page, updateData]
+    );
     return (
         <Nav id="pagination">
             <PrevIcon
@@ -61,10 +83,15 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 cursor="pointer"
                 fill="var(--text)"
                 style={{ display: option.page === 1 ? 'none' : 'block' }}
+                onClick={() => handleClickIcon('prev')}
             />
             <PageSelectContainer>
                 <div>총 {pages.length} 중</div>
-                <PageSelect name="page" onChange={handleChange}>
+                <PageSelect
+                    name="page"
+                    value={option.page}
+                    onChange={handleChange}
+                >
                     {pages.map((v) => (
                         <option value={v} key={v}>
                             {v}
@@ -80,6 +107,7 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 style={{
                     display: option.page === pages.length ? 'none' : 'block',
                 }}
+                onClick={() => handleClickIcon('next')}
             />
         </Nav>
     );
