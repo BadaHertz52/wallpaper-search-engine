@@ -41,7 +41,6 @@ function App() {
                 : 'dog';
             (async () => {
                 const imgData = await getImgData(keyword, option);
-                console.log('done');
                 if (imgData instanceof Error || !imgData.totalHits) {
                     setData(null);
                 } else {
@@ -53,8 +52,13 @@ function App() {
     return (
         <>
             <Container>
-                <ResultContainer data={data} />
                 <Hero setData={setData} option={option} setOption={setOption} />
+                <ResultContainer
+                    data={data}
+                    setData={setData}
+                    option={option}
+                    setOption={setOption}
+                />
                 <Footer />
                 <ToggleThemeButton />
             </Container>
