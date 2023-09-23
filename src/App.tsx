@@ -35,18 +35,21 @@ function App() {
     const recentKeywords = localStorage.getItem(storageKey.searchWords);
     // 페이지 오픈 시, 데이터 불러옴
     useEffect(() => {
-        const keyword = recentKeywords
-            ? (JSON.parse(recentKeywords) as string[])[0]
-            : 'dog';
-        (async () => {
-            const imgData = await getImgData(keyword, initialOPtion);
-            if (imgData instanceof Error || !imgData.totalHits) {
-                setData(null);
-            } else {
-                setData(imgData);
-            }
-        })();
-    }, [recentKeywords, initialOPtion]);
+        if (!data) {
+            const keyword = recentKeywords
+                ? (JSON.parse(recentKeywords) as string[])[0]
+                : 'dog';
+            (async () => {
+                const imgData = await getImgData(keyword, option);
+                console.log('done');
+                if (imgData instanceof Error || !imgData.totalHits) {
+                    setData(null);
+                } else {
+                    setData(imgData);
+                }
+            })();
+        }
+    }, [data, recentKeywords, option]);
     return (
         <>
             <Container>
