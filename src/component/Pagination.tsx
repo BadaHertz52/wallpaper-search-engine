@@ -3,7 +3,7 @@ import { ReactComponent as PrevIcon } from '../asset/prev.svg';
 import { ReactComponent as NextIcon } from '../asset/next.svg';
 import { ChangeEvent, Dispatch, SetStateAction, useCallback } from 'react';
 import { Option, ResponseData } from '../type';
-import { getImgData } from '../fn';
+import { getImgData, updateDataUsingLocalStorage } from '../fn';
 import { storageKey } from '../storageKey';
 
 const Nav = styled.nav`
@@ -45,12 +45,7 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 page: page,
             };
             setOption(newOption);
-            const recentKeywords = localStorage.getItem(storageKey.searchWords);
-            const keyword = recentKeywords
-                ? (JSON.parse(recentKeywords) as string[])[0]
-                : 'dog';
-            const data = await getImgData(keyword, newOption);
-            setData(data instanceof Error ? null : data);
+            updateDataUsingLocalStorage(option, setData);
         },
         [option, setOption, setData]
     );

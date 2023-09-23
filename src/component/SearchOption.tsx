@@ -1,7 +1,15 @@
-import { ChangeEvent, Dispatch, SetStateAction, useEffect } from 'react';
+import {
+    ChangeEvent,
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useEffect,
+} from 'react';
 import styled from 'styled-components';
 import { Option } from '../type';
 import RadioBtn from './RadioBtn';
+import { updateDataUsingLocalStorage } from '../fn';
+import { HeroProps } from './Hero';
 
 const SearchOptionContainer = styled.div`
     display: flex;
@@ -27,16 +35,12 @@ const SearchOptionLabel = styled.p`
     border-radius: 16px;
 `;
 
-type SearchOptionProps = {
-    option: Option;
-    setOption: Dispatch<SetStateAction<Option>>;
-};
-const SearchOption = ({ option, setOption }: SearchOptionProps) => {
-    const handleChange = (event: ChangeEvent<HTMLFormElement>) => {
-        const value = event.target.value;
-        const id = event.currentTarget.id;
-        setOption((prev) => {
-            const newOption = JSON.parse(JSON.stringify(prev)) as Option;
+const SearchOption = ({ option, setOption, setData }: HeroProps) => {
+    const handleChange = useCallback(
+        async (event: ChangeEvent<HTMLFormElement>) => {
+            const value = event.target.value;
+            const id = event.currentTarget.id;
+            const newOption = JSON.parse(JSON.stringify(option)) as Option;
             switch (id) {
                 case 'order':
                     newOption.order = value;
@@ -50,12 +54,11 @@ const SearchOption = ({ option, setOption }: SearchOptionProps) => {
                 default:
                     break;
             }
-            return newOption;
-        });
-    };
-    useEffect(() => {
-        console.log('chang!!');
-    }, [option]);
+            setOption(newOption);
+            updateDataUsingLocalStorage(newOption, setData);
+        },
+        [setOption, setData, option]
+    );
     return (
         <SearchOptionContainer>
             <SearchOptionUl>

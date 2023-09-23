@@ -1,4 +1,6 @@
+import { Dispatch, SetStateAction } from 'react';
 import { Option, ResponseData } from './type';
+import { storageKey } from './storageKey';
 
 /**
  * API에 요청할 url
@@ -39,4 +41,20 @@ export const getImgData = async (
     const url = getUrl(keyword, option);
     const data = await getData(url);
     return data;
+};
+
+export const updateDataUsingLocalStorage = async (
+    option: Option,
+    setData: Dispatch<SetStateAction<ResponseData | null>>
+) => {
+    const recentKeywords = localStorage.getItem(storageKey.searchWords);
+    const keyword = recentKeywords
+        ? (JSON.parse(recentKeywords) as string[])[0]
+        : 'dog';
+    const imgData = await getImgData(keyword, option);
+    if (imgData instanceof Error || !imgData.totalHits) {
+        setData(null);
+    } else {
+        setData(imgData);
+    }
 };

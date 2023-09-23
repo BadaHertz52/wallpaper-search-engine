@@ -145,7 +145,11 @@ const Search = (props: SearchProps) => {
                     </SearchOptionButton>
                 </SearchInputContainer>
                 {searchOption && (
-                    <SearchOption option={option} setOption={setOption} />
+                    <SearchOption
+                        option={option}
+                        setOption={setOption}
+                        setData={setData}
+                    />
                 )}
             </SearchBoxContainer>
             <SearchTagContainer>

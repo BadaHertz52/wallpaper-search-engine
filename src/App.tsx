@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ModalState, Option, ResponseData } from './type';
 import DummyData from './asset/dummyData';
 import { storageKey } from './storageKey';
-import { getImgData } from './fn';
+import { getImgData, updateDataUsingLocalStorage } from './fn';
 
 const Container = styled.div`
     position: relative;
@@ -33,20 +33,11 @@ function App() {
         targetImgData: undefined,
     });
     const recentKeywords = localStorage.getItem(storageKey.searchWords);
+
     // 페이지 오픈 시, 데이터 불러옴
     useEffect(() => {
         if (!data) {
-            const keyword = recentKeywords
-                ? (JSON.parse(recentKeywords) as string[])[0]
-                : 'dog';
-            (async () => {
-                const imgData = await getImgData(keyword, option);
-                if (imgData instanceof Error || !imgData.totalHits) {
-                    setData(null);
-                } else {
-                    setData(imgData);
-                }
-            })();
+            updateDataUsingLocalStorage(option, setData);
         }
     }, [data, recentKeywords, option]);
     return (
