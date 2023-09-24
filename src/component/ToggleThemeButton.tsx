@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as LightIcon } from '../asset/light.svg';
 import { ReactComponent as DarkIcon } from '../asset/dark.svg';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { storageKey } from '../storageKey';
 
 const Button = styled.div`
@@ -59,4 +59,4 @@ const ToggleThemeButton = () => {
     );
 };
 
-export default ToggleThemeButton;
+export default React.memo(ToggleThemeButton);

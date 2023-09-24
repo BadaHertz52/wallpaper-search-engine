@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ImgData } from '../type';
-import { useCallback } from 'react';
+import React from 'react';
 
 const Card = styled.div`
     margin-left: 8px;
@@ -30,4 +30,4 @@ const ImageCard = ({ imgData, onClick }: ImageCardProps) => {
     );
 };
 
-export default ImageCard;
+export default React.memo(ImageCard);

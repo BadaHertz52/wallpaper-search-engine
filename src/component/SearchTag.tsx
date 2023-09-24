@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ReactComponent as DeleteIcon } from '../asset/delete.svg';
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 
 const Tag = styled.div`
     display: flex;
@@ -26,21 +26,22 @@ const TagLabel = styled.span`
 type SearchTagProps = {
     word: string;
     setSearchWords: Dispatch<SetStateAction<string[] | undefined>>;
-    setKeyword: Dispatch<SetStateAction<string>>;
+    setInputValue: Dispatch<SetStateAction<string>>;
 };
-const SearchTag = ({ word, setSearchWords, setKeyword }: SearchTagProps) => {
-    const deleteTag = () => {
+const SearchTag = ({ word, setSearchWords, setInputValue }: SearchTagProps) => {
+    const tag = word.replaceAll('+', ' ');
+    const deleteTag = useCallback(() => {
         setSearchWords((prev) => {
             const newWords = prev?.filter((i) => i !== word);
             return newWords?.[0] === undefined ? undefined : newWords;
         });
-    };
+    }, [setSearchWords, word]);
     return (
         <Tag>
-            <TagLabel onClick={() => setKeyword(word)}>{word}</TagLabel>
+            <TagLabel onClick={() => setInputValue(tag)}>{tag}</TagLabel>
             <DeleteIcon width="12px" onClick={deleteTag} />
         </Tag>
     );
 };
 
-export default SearchTag;
+export default React.memo(SearchTag);

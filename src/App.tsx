@@ -4,11 +4,10 @@ import Hero from './component/Hero';
 import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ModalState, Option, ResponseData } from './type';
-import DummyData from './asset/dummyData';
+import { useEffect, useMemo, useState } from 'react';
+import { Option, ResponseData } from './type';
 import { storageKey } from './storageKey';
-import { getImgData, updateDataUsingLocalStorage } from './fn';
+import { updateDataUsingLocalStorage } from './fn';
 
 const Container = styled.div`
     position: relative;
@@ -29,11 +28,10 @@ function App() {
     const [option, setOption] = useState<Option>(initialOPtion);
     const [data, setData] = useState<ResponseData | null>(null);
     const recentKeywords = localStorage.getItem(storageKey.searchWords);
-
     // 페이지 오픈 시, 데이터 불러옴
     useEffect(() => {
-        if (!data) {
-            updateDataUsingLocalStorage(option, setData);
+        if (!data && recentKeywords) {
+            updateDataUsingLocalStorage(option, setData, recentKeywords);
         }
     }, [data, recentKeywords, option]);
     return (

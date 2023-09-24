@@ -1,10 +1,4 @@
-import {
-    ChangeEvent,
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-} from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
 import styled from 'styled-components';
 import { Option } from '../type';
 import RadioBtn from './RadioBtn';
@@ -138,4 +132,4 @@ const SearchOption = ({ option, setOption, setData }: HeroProps) => {
     );
 };
 
-export default SearchOption;
+export default React.memo(SearchOption);

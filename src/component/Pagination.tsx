@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import { ReactComponent as PrevIcon } from '../asset/prev.svg';
 import { ReactComponent as NextIcon } from '../asset/next.svg';
-import { ChangeEvent, Dispatch, SetStateAction, useCallback } from 'react';
+import React, {
+    ChangeEvent,
+    Dispatch,
+    SetStateAction,
+    useCallback,
+} from 'react';
 import { Option, ResponseData } from '../type';
-import { getImgData, updateDataUsingLocalStorage } from '../fn';
-import { storageKey } from '../storageKey';
+import { updateDataUsingLocalStorage } from '../fn';
 
 const Nav = styled.nav`
     display: flex;
@@ -39,37 +43,33 @@ type PaginationProps = {
 };
 const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
     const updateData = useCallback(
-        async (page: number) => {
+        (page: number) => {
             const newOption = {
                 ...(JSON.parse(JSON.stringify(option)) as Option),
                 page: page,
             };
             setOption(newOption);
-            updateDataUsingLocalStorage(option, setData);
+            updateDataUsingLocalStorage(newOption, setData);
         },
         [option, setOption, setData]
     );
 
     const handleChange = useCallback(
-        async (event: ChangeEvent<HTMLSelectElement>) => {
+        (event: ChangeEvent<HTMLSelectElement>) => {
             const value = Number(event.target.value);
             if (value !== option.page) {
-                await updateData(value);
+                updateData(value);
             }
         },
         [updateData, option.page]
     );
     const handleClickIcon = useCallback(
-        async (icon: string) => {
-            let page = option.page;
-            if (icon === 'prev') {
-                --page;
-            } else {
-                ++page;
-            }
-            await updateData(page);
+        (icon: string) => {
+            const newCurrentPage: number =
+                option.page + (icon === 'prev' ? -1 : 1);
+            updateData(newCurrentPage);
         },
-        [option.page, updateData]
+        [updateData, option.page]
     );
     return (
         <Nav id="pagination">
@@ -77,7 +77,12 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 width="24"
                 cursor="pointer"
                 fill="var(--text)"
-                style={{ display: option.page === 1 ? 'none' : 'block' }}
+                style={{
+                    display:
+                        option.page === 1 || pages.length === 1
+                            ? 'none'
+                            : 'block',
+                }}
                 onClick={() => handleClickIcon('prev')}
             />
             <PageSelectContainer>
@@ -101,7 +106,7 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 fill="var(--text)"
                 style={{
                     display:
-                        option.page === pages.length || option.page === 1
+                        option.page === pages.length || pages.length === 1
                             ? 'none'
                             : 'block',
                 }}
@@ -111,4 +116,4 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
     );
 };
 
-export default Pagination;
+export default React.memo(Pagination);
