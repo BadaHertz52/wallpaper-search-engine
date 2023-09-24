@@ -30,7 +30,7 @@ function App() {
     const recentKeywords = localStorage.getItem(storageKey.searchWords);
     // 페이지 오픈 시, 데이터 불러옴
     useEffect(() => {
-        if (!data && recentKeywords) {
+        if (!data) {
             updateDataUsingLocalStorage(option, setData, recentKeywords);
         }
     }, [data, recentKeywords, option]);
