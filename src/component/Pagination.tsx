@@ -43,37 +43,33 @@ type PaginationProps = {
 };
 const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
     const updateData = useCallback(
-        async (page: number) => {
+        (page: number) => {
             const newOption = {
                 ...(JSON.parse(JSON.stringify(option)) as Option),
                 page: page,
             };
             setOption(newOption);
-            updateDataUsingLocalStorage(option, setData);
+            updateDataUsingLocalStorage(newOption, setData);
         },
         [option, setOption, setData]
     );
 
     const handleChange = useCallback(
-        async (event: ChangeEvent<HTMLSelectElement>) => {
+        (event: ChangeEvent<HTMLSelectElement>) => {
             const value = Number(event.target.value);
             if (value !== option.page) {
-                await updateData(value);
+                updateData(value);
             }
         },
         [updateData, option.page]
     );
     const handleClickIcon = useCallback(
-        async (icon: string) => {
-            let page = option.page;
-            if (icon === 'prev') {
-                --page;
-            } else {
-                ++page;
-            }
-            await updateData(page);
+        (icon: string) => {
+            const newCurrentPage: number =
+                option.page + (icon === 'prev' ? -1 : 1);
+            updateData(newCurrentPage);
         },
-        [option.page, updateData]
+        [updateData, option.page]
     );
     return (
         <Nav id="pagination">
