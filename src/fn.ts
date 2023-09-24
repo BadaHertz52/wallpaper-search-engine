@@ -46,7 +46,7 @@ export const getImgData = async (
 export const updateDataUsingLocalStorage = async (
     option: Option,
     setData: Dispatch<SetStateAction<ResponseData | null>>,
-    storageItem?: string
+    storageItem?: string | null
 ) => {
     const recentKeywords =
         storageItem || localStorage.getItem(storageKey.searchWords);
