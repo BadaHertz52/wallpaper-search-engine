@@ -12,7 +12,7 @@ const Nav = styled.nav`
     align-items: center;
     gap: 8px;
     margin: 16px;
-    color: var(--text); ;
+    color: var(--text);
 `;
 const PageSelectContainer = styled.div`
     display: flex;
