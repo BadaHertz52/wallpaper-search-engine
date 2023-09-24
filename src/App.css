@@ -11,7 +11,7 @@ html {
 }
 
 .dark {
-    --primary: ##1e1f21;
+    --primary: #1e1f21;
     --secondary: #292a2d;
     --highlight: #4cabff;
     --text: #ffffff;
