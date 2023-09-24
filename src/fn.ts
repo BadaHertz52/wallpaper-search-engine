@@ -50,7 +50,6 @@ export const updateDataUsingLocalStorage = async (
 ) => {
     const recentKeywords =
         storageItem || localStorage.getItem(storageKey.searchWords);
-    console.log('recent', recentKeywords);
     const keyword = recentKeywords
         ? (JSON.parse(recentKeywords) as string[])[0]
         : 'dog';
