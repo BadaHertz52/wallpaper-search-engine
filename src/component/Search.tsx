@@ -101,10 +101,12 @@ const Search = (props: SearchProps) => {
                     .filter((t) => t)
                     .join('+');
                 //최근 검색어 추가
-                !searchWords?.includes(keyword) &&
-                    setSearchWords((prev) =>
-                        prev ? [keyword, ...prev] : [keyword]
-                    );
+                setSearchWords((prev) => {
+                    if (prev?.includes(keyword)) {
+                        prev.splice(prev?.indexOf(keyword), 1);
+                    }
+                    return prev ? [keyword, ...prev] : [keyword];
+                });
                 // input 창 빈문자
                 setInputValue('');
                 // 검색
