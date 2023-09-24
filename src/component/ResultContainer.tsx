@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import ImageCard from './ImageCard';
 import Pagination from './Pagination';
 import EmptyResult from './EmptyResult';
-import { Option, ResponseData } from '../type';
+import { ImgData, ModalState, Option, ResponseData } from '../type';
+import ImageModal from './ImageModal';
 
 const Container = styled.div`
     max-width: 1830px;
@@ -30,6 +31,10 @@ const ResultContainer = ({
     option,
     setOption,
 }: ResultContainerProps) => {
+    const [modal, setModal] = useState<ModalState>({
+        open: false,
+        targetImgData: undefined,
+    });
     const pageLength: number = !data
         ? 0
         : Math.round(data.totalHits / Number(data.hits.length || 20));
@@ -37,10 +42,16 @@ const ResultContainer = ({
      * api 요청 후에 생기는 페이지 번호를 요소로하는 배열
      */
     const pages = new Array(pageLength).fill('p').map((v, i) => i + 1);
+
+    const showModal = (imgData: ImgData) => {
+        setModal({
+            open: true,
+            targetImgData: imgData,
+        });
+    };
     return (
         <Container>
-            {/* ImgCard 클릭 시 해당 이미지의 정보로 ImageModal이 나타나야 합니다. */}
-            {/* <ImageModal /> */}
+            <ImageModal modal={modal} setModal={setModal} />
             {data && (
                 <Pagination
                     pages={pages}
@@ -52,7 +63,11 @@ const ResultContainer = ({
             <ResultsWrapper>
                 {data ? (
                     data.hits?.map((imgData) => (
-                        <ImageCard key={imgData.id} imgData={imgData} />
+                        <ImageCard
+                            key={imgData.id}
+                            imgData={imgData}
+                            onClick={showModal}
+                        />
                     ))
                 ) : (
                     <EmptyResult />

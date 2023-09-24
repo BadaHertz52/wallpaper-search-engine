@@ -28,10 +28,6 @@ function App() {
     );
     const [option, setOption] = useState<Option>(initialOPtion);
     const [data, setData] = useState<ResponseData | null>(null);
-    const [modal, setModal] = useState<ModalState>({
-        open: false,
-        targetImgData: undefined,
-    });
     const recentKeywords = localStorage.getItem(storageKey.searchWords);
 
     // 페이지 오픈 시, 데이터 불러옴

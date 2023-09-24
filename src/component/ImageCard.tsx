@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { ImgData } from '../type';
+import { useCallback } from 'react';
 
 const Card = styled.div`
     margin-left: 8px;
@@ -16,13 +18,13 @@ const Img = styled.img`
 `;
 
 type ImageCardProps = {
-    imgData: any;
-    onClick?: () => void;
+    imgData: ImgData;
+    onClick: (imgData: ImgData) => void;
 };
 const ImageCard = ({ imgData, onClick }: ImageCardProps) => {
     const { webformatURL, id } = imgData;
     return (
-        <Card onClick={onClick}>
+        <Card onClick={() => onClick(imgData)}>
             <Img key={id} src={webformatURL}></Img>
         </Card>
     );

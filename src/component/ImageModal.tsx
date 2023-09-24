@@ -1,7 +1,9 @@
+import * as reactDOM from 'react-dom';
 import styled from 'styled-components';
 import { ReactComponent as LikeIcon } from '../asset/like.svg';
 import { ReactComponent as DeleteIcon } from '../asset/delete.svg';
-import DummyData from '../asset/dummyData';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import { ModalState } from '../type';
 
 const Modal = styled.div`
     position: fixed;
@@ -31,20 +33,41 @@ const DetailRow = styled.div`
     }
 `;
 
-const ImageModal = () => {
-    const { largeImageURL } = DummyData.hits[0];
-    return (
-        <Modal>
-            <DeleteIcon width="24px" cursor="pointer" fill="#FFFFFF" />
+type ImageModalProps = {
+    modal: ModalState;
+    setModal: Dispatch<SetStateAction<ModalState>>;
+};
+const ImageModal = ({ modal, setModal }: ImageModalProps) => {
+    const imgData = modal.targetImgData;
+    const { tags, likes, views } = imgData || {
+        tags: '',
+        likes: '',
+        views: '',
+    };
+    const largeImageURL: string | undefined = imgData?.largeImageURL;
+    const modalRootEl = document.getElementById('modal-root') as HTMLElement;
+    const closeModal = useCallback(() => {
+        setModal({ open: false, targetImgData: undefined });
+    }, [setModal]);
+
+    return reactDOM.createPortal(
+        <Modal style={{ display: modal.open ? 'block' : 'none' }}>
+            <DeleteIcon
+                width="24px"
+                cursor="pointer"
+                fill="#FFFFFF"
+                onClick={closeModal}
+            />
             <ModalImg src={largeImageURL} />
-            <p>태그,태그,태그</p>
+            <p>{tags}</p>
             <DetailRow>
                 <LikeIcon width="20px" height="20px" />
-                123명이 좋아합니다
+                {likes}명이 좋아합니다
             </DetailRow>
-            <p>12345 조회</p>
-        </Modal>
+            <p>{views} 조회</p>
+        </Modal>,
+        modalRootEl
     );
 };
 
-export default ImageModal;
+export default React.memo(ImageModal);
