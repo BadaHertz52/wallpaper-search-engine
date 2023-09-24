@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import { ReactComponent as PrevIcon } from '../asset/prev.svg';
 import { ReactComponent as NextIcon } from '../asset/next.svg';
-import { ChangeEvent, Dispatch, SetStateAction, useCallback } from 'react';
+import React, {
+    ChangeEvent,
+    Dispatch,
+    SetStateAction,
+    useCallback,
+} from 'react';
 import { Option, ResponseData } from '../type';
-import { getImgData, updateDataUsingLocalStorage } from '../fn';
-import { storageKey } from '../storageKey';
+import { updateDataUsingLocalStorage } from '../fn';
 
 const Nav = styled.nav`
     display: flex;
@@ -111,4 +115,4 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
     );
 };
 
-export default Pagination;
+export default React.memo(Pagination);

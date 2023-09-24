@@ -1,4 +1,4 @@
-import {
+import React, {
     ChangeEvent,
     useState,
     KeyboardEvent,
@@ -167,4 +167,4 @@ const Search = (props: SearchProps) => {
     );
 };
 
-export default Search;
+export default React.memo(Search);

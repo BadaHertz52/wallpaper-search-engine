@@ -4,11 +4,10 @@ import Hero from './component/Hero';
 import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ModalState, Option, ResponseData } from './type';
-import DummyData from './asset/dummyData';
+import { useEffect, useMemo, useState } from 'react';
+import { Option, ResponseData } from './type';
 import { storageKey } from './storageKey';
-import { getImgData, updateDataUsingLocalStorage } from './fn';
+import { updateDataUsingLocalStorage } from './fn';
 
 const Container = styled.div`
     position: relative;

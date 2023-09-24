@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import ImageCard from './ImageCard';
 import Pagination from './Pagination';
 import EmptyResult from './EmptyResult';
@@ -77,4 +77,4 @@ const ResultContainer = ({
     );
 };
 
-export default ResultContainer;
+export default React.memo(ResultContainer);

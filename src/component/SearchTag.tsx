@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ReactComponent as DeleteIcon } from '../asset/delete.svg';
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 const Tag = styled.div`
     display: flex;
@@ -43,4 +43,4 @@ const SearchTag = ({ word, setSearchWords, setKeyword }: SearchTagProps) => {
     );
 };
 
-export default SearchTag;
+export default React.memo(SearchTag);

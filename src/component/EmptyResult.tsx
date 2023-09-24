@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const EmptyResultContainer = styled.div`
@@ -19,4 +20,4 @@ const EmptyResult = () => {
     );
 };
 
-export default EmptyResult;
+export default React.memo(EmptyResult);

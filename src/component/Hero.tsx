@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Search from './Search';
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Option, ResponseData } from '../type';
 
 const Container = styled.div`
@@ -61,4 +61,4 @@ const Hero = (props: HeroProps) => {
     );
 };
 
-export default Hero;
+export default React.memo(Hero);
