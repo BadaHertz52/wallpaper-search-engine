@@ -13,8 +13,8 @@ jobs:
      
    - name: Setting .env
      run: |
-        echo "REACT_APP_API_KEY =$REACT_APP_API_KEY" >> .env
+        echo "REACT_APP_PIXABAY =$REACT_APP_PIXABAY" >> .env
         cat .env
         
      env:  
-      REACT_APP_API_KEY: ${{secrets.REACT_APP_API_KEY}}
+      REACT_APP_PIXABAY: ${{secrets.REACT_APP_PIXABAY}}
