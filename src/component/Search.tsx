@@ -110,7 +110,13 @@ const Search = (props: SearchProps) => {
                 // input 창 빈문자
                 setInputValue('');
                 // 검색
-                const data = await getImgData(keyword, option);
+                const newOption = {
+                    ...JSON.parse(JSON.stringify(option)),
+                    page: 1,
+                };
+
+                const data = await getImgData(keyword, newOption);
+                setOption(newOption);
                 if (data instanceof Error || !data.totalHits) {
                     setData(null);
                 } else {
@@ -118,7 +124,7 @@ const Search = (props: SearchProps) => {
                 }
             }
         },
-        [option, inputValue, searchWords, setData]
+        [option, inputValue, setData]
     );
     // 로컬스토리지에 저장된 최근 검색어 적용
     useEffect(() => {
