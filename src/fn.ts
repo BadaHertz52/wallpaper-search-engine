@@ -45,9 +45,12 @@ export const getImgData = async (
 
 export const updateDataUsingLocalStorage = async (
     option: Option,
-    setData: Dispatch<SetStateAction<ResponseData | null>>
+    setData: Dispatch<SetStateAction<ResponseData | null>>,
+    storageItem?: string
 ) => {
-    const recentKeywords = localStorage.getItem(storageKey.searchWords);
+    const recentKeywords =
+        storageItem || localStorage.getItem(storageKey.searchWords);
+    console.log('recent', recentKeywords);
     const keyword = recentKeywords
         ? (JSON.parse(recentKeywords) as string[])[0]
         : 'dog';

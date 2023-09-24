@@ -1,4 +1,4 @@
-import React, {
+import {
     ChangeEvent,
     useState,
     KeyboardEvent,
@@ -59,7 +59,7 @@ const Search = (props: SearchProps) => {
     const { setData, setOption, option } = props;
     const key = storageKey.searchWords;
     const [searchOption, setSearchOption] = useState<boolean>(false);
-    const [keyword, setKeyword] = useState<string>('');
+    const [inputValue, setInputValue] = useState<string>('');
     const [searchWords, setSearchWords] = useState<string[]>();
 
     const toggleSearchOption = () => {
@@ -87,7 +87,7 @@ const Search = (props: SearchProps) => {
             const text = event.target.value.replaceAll(/[&<>"']/g, (t) =>
                 changeEscapeChars(t)
             );
-            setKeyword(text);
+            setInputValue(text);
         },
         [changeEscapeChars]
     );
@@ -95,14 +95,18 @@ const Search = (props: SearchProps) => {
     const handleKeyUp = useCallback(
         async (event: KeyboardEvent<HTMLInputElement>) => {
             const code = event.code;
-            if (code === 'Enter' && keyword) {
+            if (code === 'Enter' && inputValue) {
+                const keyword = inputValue
+                    .split(' ')
+                    .filter((t) => t)
+                    .join('+');
                 //최근 검색어 추가
                 !searchWords?.includes(keyword) &&
                     setSearchWords((prev) =>
                         prev ? [keyword, ...prev] : [keyword]
                     );
                 // input 창 빈문자
-                setKeyword('');
+                setInputValue('');
                 // 검색
                 const data = await getImgData(keyword, option);
                 if (data instanceof Error || !data.totalHits) {
@@ -112,7 +116,7 @@ const Search = (props: SearchProps) => {
                 }
             }
         },
-        [option, keyword, searchWords, setData]
+        [option, inputValue, searchWords, setData]
     );
     // 로컬스토리지에 저장된 최근 검색어 적용
     useEffect(() => {
@@ -136,7 +140,7 @@ const Search = (props: SearchProps) => {
                     <SearchIcon width="24" fill="#5e5e5e" />
                     <SearchInput
                         placeholder="검색어 입력 후 ENTER"
-                        value={keyword}
+                        value={inputValue}
                         onChange={handleChange}
                         onKeyUp={handleKeyUp}
                     />
@@ -159,7 +163,7 @@ const Search = (props: SearchProps) => {
                             key={`searchTag_${i}`}
                             word={t}
                             setSearchWords={setSearchWords}
-                            setKeyword={setKeyword}
+                            setInputValue={setInputValue}
                         />
                     ))}
             </SearchTagContainer>
@@ -167,4 +171,4 @@ const Search = (props: SearchProps) => {
     );
 };
 
-export default React.memo(Search);
+export default Search;

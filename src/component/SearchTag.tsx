@@ -26,9 +26,10 @@ const TagLabel = styled.span`
 type SearchTagProps = {
     word: string;
     setSearchWords: Dispatch<SetStateAction<string[] | undefined>>;
-    setKeyword: Dispatch<SetStateAction<string>>;
+    setInputValue: Dispatch<SetStateAction<string>>;
 };
-const SearchTag = ({ word, setSearchWords, setKeyword }: SearchTagProps) => {
+const SearchTag = ({ word, setSearchWords, setInputValue }: SearchTagProps) => {
+    const tag = word.replaceAll('+', ' ');
     const deleteTag = () => {
         setSearchWords((prev) => {
             const newWords = prev?.filter((i) => i !== word);
@@ -37,7 +38,7 @@ const SearchTag = ({ word, setSearchWords, setKeyword }: SearchTagProps) => {
     };
     return (
         <Tag>
-            <TagLabel onClick={() => setKeyword(word)}>{word}</TagLabel>
+            <TagLabel onClick={() => setInputValue(word)}>{tag}</TagLabel>
             <DeleteIcon width="12px" onClick={deleteTag} />
         </Tag>
     );
