@@ -2,8 +2,9 @@ import * as reactDOM from 'react-dom';
 import styled from 'styled-components';
 import { ReactComponent as LikeIcon } from '../asset/like.svg';
 import { ReactComponent as DeleteIcon } from '../asset/delete.svg';
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import React, { Dispatch, SetStateAction, Suspense, useCallback } from 'react';
 import { ModalState } from '../type';
+import SuspenseImage from './SuspenseImage';
 
 const Modal = styled.div`
     position: fixed;
@@ -59,7 +60,20 @@ const ImageModal = ({ modal, setModal }: ImageModalProps) => {
                 fill="#FFFFFF"
                 onClick={closeModal}
             />
-            <ModalImg src={largeImageURL} style={{ maxHeight: maxHeight }} />
+            {largeImageURL && (
+                <Suspense fallback={<div>loading...</div>}>
+                    <SuspenseImage
+                        src={largeImageURL}
+                        alt={`img modal_${imgData?.id}`}
+                        style={{
+                            width: '100%',
+                            maxWidth: '100%',
+                            maxHeight: maxHeight,
+                        }}
+                    />
+                </Suspense>
+            )}
+
             <p style={{ margin: '10px 0' }}>{tags}</p>
             <DetailRow>
                 <LikeIcon width="20px" height="20px" />
