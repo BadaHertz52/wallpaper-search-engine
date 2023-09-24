@@ -8,7 +8,7 @@ import { storageKey } from './storageKey';
 const getUrl = (keyword: string, option: Option) => {
     return [
         'https://pixabay.com/api/?',
-        `key=${process.env.REACT_APP_API_KEY}`,
+        `key=${process.env.REACT_APP_PIXABAY}`,
         `&q=${keyword}`,
         `&orientation=${option.orientation}`,
         `&order=${option.order}`,
