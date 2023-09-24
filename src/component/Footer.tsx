@@ -10,7 +10,8 @@ const FooterContainer = styled.div`
 const Footer = () => {
     return (
         <FooterContainer>
-            ©2022 Hanameee Corp. All rights reserved.
+            <p>©2022 Hanameee Corp. All rights reserved.</p>
+            <p>©2023 Badahertz52</p>
         </FooterContainer>
     );
 };
