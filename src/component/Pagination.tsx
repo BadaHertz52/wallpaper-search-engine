@@ -81,7 +81,12 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 width="24"
                 cursor="pointer"
                 fill="var(--text)"
-                style={{ display: option.page === 1 ? 'none' : 'block' }}
+                style={{
+                    display:
+                        option.page === 1 || pages.length === 1
+                            ? 'none'
+                            : 'block',
+                }}
                 onClick={() => handleClickIcon('prev')}
             />
             <PageSelectContainer>
@@ -105,7 +110,7 @@ const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
                 fill="var(--text)"
                 style={{
                     display:
-                        option.page === pages.length || option.page === 1
+                        option.page === pages.length || pages.length === 1
                             ? 'none'
                             : 'block',
                 }}
