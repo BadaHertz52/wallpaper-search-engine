@@ -4,7 +4,6 @@ import React, {
     useCallback,
     CSSProperties,
     Suspense,
-    useState,
 } from 'react';
 import * as reactDOM from 'react-dom';
 import styled from 'styled-components';
@@ -32,9 +31,6 @@ const Modal = styled.div`
     overflow: hidden;
     flex-direction: column;
     justify-content: center;
-`;
-const ModalImg = styled.img`
-    max-width: 100%;
 `;
 
 const DetailRow = styled.div`
