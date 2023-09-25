@@ -1,10 +1,18 @@
+import React, {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    CSSProperties,
+    Suspense,
+    useState,
+} from 'react';
 import * as reactDOM from 'react-dom';
 import styled from 'styled-components';
 import { ReactComponent as LikeIcon } from '../asset/like.svg';
 import { ReactComponent as DeleteIcon } from '../asset/delete.svg';
-import React, { Dispatch, SetStateAction, Suspense, useCallback } from 'react';
 import { ModalState } from '../type';
 import SuspenseImage from './SuspenseImage';
+import Loading from './Loading';
 
 const Modal = styled.div`
     position: fixed;
@@ -22,9 +30,10 @@ const Modal = styled.div`
     padding: 16px;
     box-shadow: 8px 8px 12px -1px rgb(0 0 0 / 0.3);
     overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
 `;
 const ModalImg = styled.img`
-    width: 100%;
     max-width: 100%;
 `;
 
@@ -34,6 +43,7 @@ const DetailRow = styled.div`
         margin-right: 6px;
     }
 `;
+
 type ImageModalProps = {
     modal: ModalState;
     setModal: Dispatch<SetStateAction<ModalState>>;
@@ -46,40 +56,46 @@ const ImageModal = ({ modal, setModal }: ImageModalProps) => {
         views: '',
     };
     // window.innerHeight - modal padding * 2 - deleteIcon height - other height
-    const maxHeight = window.innerHeight - 16 * 2 - 24 - 21.6 * 3 - 16 * 4 - 16;
+    const maxHeight = `${
+        (window.innerHeight - 16 * 2 - 24 - 21.6 * 3 - 16 * 4 - 16) * 0.9
+    }px`;
+    const imgStyle: CSSProperties = {
+        maxWidth: '100%',
+        maxHeight: maxHeight,
+        margin: `auto auto`,
+    };
     const largeImageURL: string | undefined = imgData?.largeImageURL;
     const modalRootEl = document.getElementById('modal-root') as HTMLElement;
     const closeModal = useCallback(() => {
         setModal({ open: false, targetImgData: undefined });
     }, [setModal]);
     return reactDOM.createPortal(
-        <Modal style={{ display: modal.open ? 'block' : 'none' }}>
-            <DeleteIcon
-                width="24px"
-                cursor="pointer"
-                fill="#FFFFFF"
-                onClick={closeModal}
-            />
-            {largeImageURL && (
-                <Suspense fallback={<div>loading...</div>}>
+        <Modal
+            style={{
+                display: modal.open ? 'flex' : 'none',
+            }}
+        >
+            <Suspense fallback={<Loading />}>
+                <DeleteIcon
+                    width="24px"
+                    cursor="pointer"
+                    fill="#FFFFFF"
+                    onClick={closeModal}
+                />
+                {largeImageURL && (
                     <SuspenseImage
-                        src={largeImageURL}
+                        imgUrl={largeImageURL}
                         alt={`img modal_${imgData?.id}`}
-                        style={{
-                            width: '100%',
-                            maxWidth: '100%',
-                            maxHeight: maxHeight,
-                        }}
+                        style={imgStyle}
                     />
-                </Suspense>
-            )}
-
-            <p style={{ margin: '10px 0' }}>{tags}</p>
-            <DetailRow>
-                <LikeIcon width="20px" height="20px" />
-                {likes}명이 좋아합니다
-            </DetailRow>
-            <p style={{ margin: '10px 0' }}>{views} 조회</p>
+                )}
+                <p style={{ margin: '10px 0' }}>{tags}</p>
+                <DetailRow>
+                    <LikeIcon width="20px" height="20px" />
+                    {likes}명이 좋아합니다
+                </DetailRow>
+                <p style={{ margin: '10px 0' }}>{views} 조회</p>
+            </Suspense>
         </Modal>,
         modalRootEl
     );
