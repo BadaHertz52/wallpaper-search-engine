@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/wallpaper-search-engine/static/css/main.78eacf1c.css",
-    "main.js": "/wallpaper-search-engine/static/js/main.4d05dc61.js",
+    "main.js": "/wallpaper-search-engine/static/js/main.22be9fd9.js",
     "static/media/light.svg": "/wallpaper-search-engine/static/media/light.88fbd78c94d14799e5116bd5e3fc73b6.svg",
     "static/media/dark.svg": "/wallpaper-search-engine/static/media/dark.f7f6a5694d849d508c5b3bd656a599aa.svg",
     "static/media/like.svg": "/wallpaper-search-engine/static/media/like.d1126d78615b3f7421d981059a09ca7e.svg",
@@ -11,10 +11,10 @@
     "static/media/prev.svg": "/wallpaper-search-engine/static/media/prev.80e50b7866579f245ef162f707e1ae0a.svg",
     "static/media/delete.svg": "/wallpaper-search-engine/static/media/delete.1f80d17447484405d23d0fcb0055e241.svg",
     "main.78eacf1c.css.map": "/wallpaper-search-engine/static/css/main.78eacf1c.css.map",
-    "main.4d05dc61.js.map": "/wallpaper-search-engine/static/js/main.4d05dc61.js.map"
+    "main.22be9fd9.js.map": "/wallpaper-search-engine/static/js/main.22be9fd9.js.map"
   },
   "entrypoints": [
     "static/css/main.78eacf1c.css",
-    "static/js/main.4d05dc61.js"
+    "static/js/main.22be9fd9.js"
   ]
 }
