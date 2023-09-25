@@ -28,13 +28,14 @@ const ToggleThemeButton = () => {
     const [theme, setTheme] = useState<Theme>('light');
     const key = storageKey.theme;
     const rootEl = document.getElementById('root');
-
+    const modalRootEl = document.getElementById('modal-root');
     const changeTheme = useCallback(
         (newTheme: Theme) => {
             rootEl?.classList.toggle('dark', newTheme === 'dark');
+            modalRootEl?.classList.toggle('dark', newTheme === 'dark');
             setTheme(newTheme);
         },
-        [rootEl]
+        [rootEl, modalRootEl]
     );
 
     const toggleTheme = () => {
