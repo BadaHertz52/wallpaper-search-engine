@@ -124,7 +124,7 @@ const Search = (props: SearchProps) => {
                 }
             }
         },
-        [option, inputValue, setData]
+        [option, inputValue, setData, setOption]
     );
     // 로컬스토리지에 저장된 최근 검색어 적용
     useEffect(() => {
