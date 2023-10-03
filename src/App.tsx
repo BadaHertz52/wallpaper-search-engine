@@ -7,7 +7,7 @@ import './App.css';
 import { useEffect, useMemo, useState } from 'react';
 import { Option, ResponseData } from './type';
 import { storageKey } from './storageKey';
-import { updateDataUsingLocalStorage } from './fn';
+import { updateDataUsingLocalStorage } from './api';
 
 const Container = styled.div`
     position: relative;

@@ -6,16 +6,17 @@ import { storageKey } from './storageKey';
  * API에 요청할 url
  */
 const getUrl = (keyword: string, option: Option) => {
-    return [
-        'https://pixabay.com/api/?',
-        `key=${process.env.REACT_APP_PIXABAY}`,
-        `&q=${keyword}`,
-        `&orientation=${option.orientation}`,
-        `&order=${option.order}`,
-        `&page=${option.page}`,
-        `&per_page=${option.perPage}`,
-        '&image_type=photo',
-    ].join('');
+    const params = new URLSearchParams({
+        key: process.env.REACT_APP_PIXABAY || '',
+        q: keyword,
+        orientation: option.orientation,
+        order: option.order,
+        page: String(option.page),
+        per_page: String(option.perPage),
+        image_type: 'photo',
+    }).toString();
+
+    return `https://pixabay.com/api/?${params}`;
 };
 /**
  * pixabay에 data 요청

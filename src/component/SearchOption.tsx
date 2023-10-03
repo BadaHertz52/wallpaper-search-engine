@@ -2,7 +2,7 @@ import React, { ChangeEvent, useCallback } from 'react';
 import styled from 'styled-components';
 import { Option } from '../type';
 import RadioBtn from './RadioBtn';
-import { updateDataUsingLocalStorage } from '../fn';
+import { updateDataUsingLocalStorage } from '../api';
 import { HeroProps } from './Hero';
 
 const SearchOptionContainer = styled.div`

@@ -10,7 +10,7 @@ import { ReactComponent as SearchIcon } from '../asset/search.svg';
 import SearchTag from './SearchTag';
 import SearchOption from './SearchOption';
 import { HeroProps } from './Hero';
-import { getImgData } from '../fn';
+import { getImgData } from '../api';
 import { storageKey } from '../storageKey';
 
 const SearchTagContainer = styled.div`

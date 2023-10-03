@@ -8,7 +8,7 @@ import React, {
     useCallback,
 } from 'react';
 import { Option, ResponseData } from '../type';
-import { updateDataUsingLocalStorage } from '../fn';
+import { updateDataUsingLocalStorage } from '../api';
 
 const Nav = styled.nav`
     display: flex;
