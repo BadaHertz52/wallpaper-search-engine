@@ -4,10 +4,10 @@ import Hero from './component/Hero';
 import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Option, ResponseData } from './type';
 import { storageKey } from './storageKey';
-import { updateDataUsingLocalStorage } from './api';
+import { getImgData } from './api';
 
 const Container = styled.div`
     position: relative;
@@ -26,21 +26,40 @@ function App() {
         []
     );
     const [option, setOption] = useState<Option>(initialOPtion);
+    const [keyword, setKeyword] = useState<string>();
     const [data, setData] = useState<ResponseData | null>(null);
     const recentKeywords = localStorage.getItem(storageKey.searchWords);
-    // 페이지 오픈 시, 데이터 불러옴
-    useEffect(() => {
-        if (!data) {
-            updateDataUsingLocalStorage(option, setData, recentKeywords);
+
+    const updateData = useCallback(async () => {
+        if (keyword) {
+            const imgData = await getImgData(keyword, option);
+            if (imgData instanceof Error || !imgData.totalHits) {
+                setData(null);
+            } else {
+                setData(imgData);
+            }
         }
-    }, [data, recentKeywords, option]);
+    }, [keyword, option, setData]);
+
+    useEffect(() => {
+        updateData();
+    }, [updateData, option, keyword]);
+
+    useEffect(() => {
+        if (!keyword) {
+            // 페이지 오픈 시 , 저장된 keyword가 로컬 스토리지에 없을 때 "dog"에 대한 이미지를 가져오도록 함
+            const newKeyword = recentKeywords
+                ? (JSON.parse(recentKeywords) as string[])[0]
+                : 'dog';
+            setKeyword(newKeyword);
+        }
+    }, [recentKeywords, keyword]);
     return (
         <>
             <Container>
-                <Hero setData={setData} option={option} setOption={setOption} />
+                <Hero setKeyword={setKeyword} setOption={setOption} />
                 <ResultContainer
                     data={data}
-                    setData={setData}
                     option={option}
                     setOption={setOption}
                 />

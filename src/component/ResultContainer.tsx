@@ -21,16 +21,10 @@ const ResultsWrapper = styled.div`
 `;
 type ResultContainerProps = {
     data: ResponseData | null;
-    setData: Dispatch<SetStateAction<ResponseData | null>>;
     option: Option;
     setOption: Dispatch<SetStateAction<Option>>;
 };
-const ResultContainer = ({
-    data,
-    setData,
-    option,
-    setOption,
-}: ResultContainerProps) => {
+const ResultContainer = ({ data, option, setOption }: ResultContainerProps) => {
     const [modal, setModal] = useState<ModalState>({
         open: false,
         targetImgData: undefined,
@@ -57,7 +51,6 @@ const ResultContainer = ({
                     pages={pages}
                     option={option}
                     setOption={setOption}
-                    setData={setData}
                 />
             )}
             <ResultsWrapper>

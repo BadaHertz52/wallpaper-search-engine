@@ -39,8 +39,7 @@ const Content = styled.div`
 `;
 
 export type HeroProps = {
-    setData: Dispatch<SetStateAction<ResponseData | null>>;
-    option: Option;
+    setKeyword: Dispatch<SetStateAction<string | undefined>>;
     setOption: Dispatch<SetStateAction<Option>>;
 };
 const Hero = (props: HeroProps) => {
@@ -51,11 +50,7 @@ const Hero = (props: HeroProps) => {
                     <HeroTitleLink href="./">배경화면 검색 엔진</HeroTitleLink>
                 </HeroTitle>
                 <HeroSubtitle>오늘 나의 배경화면은? 👀</HeroSubtitle>
-                <Search
-                    setData={props.setData}
-                    option={props.option}
-                    setOption={props.setOption}
-                />
+                <Search {...props} />
             </Content>
         </Container>
     );

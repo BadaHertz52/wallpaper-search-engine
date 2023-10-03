@@ -7,8 +7,7 @@ import React, {
     SetStateAction,
     useCallback,
 } from 'react';
-import { Option, ResponseData } from '../type';
-import { updateDataUsingLocalStorage } from '../api';
+import { Option } from '../type';
 
 const Nav = styled.nav`
     display: flex;
@@ -37,39 +36,37 @@ const PageSelect = styled.select`
 
 type PaginationProps = {
     pages: number[];
-    setData: Dispatch<SetStateAction<ResponseData | null>>;
     option: Option;
     setOption: Dispatch<SetStateAction<Option>>;
 };
-const Pagination = ({ pages, option, setOption, setData }: PaginationProps) => {
-    const updateData = useCallback(
+const Pagination = ({ pages, option, setOption }: PaginationProps) => {
+    const updatePageOption = useCallback(
         (page: number) => {
-            const newOption = {
-                ...(JSON.parse(JSON.stringify(option)) as Option),
-                page: page,
-            };
-            setOption(newOption);
-            updateDataUsingLocalStorage(newOption, setData);
+            if (option.page !== page) {
+                const newOption = {
+                    ...(JSON.parse(JSON.stringify(option)) as Option),
+                    page: page,
+                };
+                setOption(newOption);
+            }
         },
-        [option, setOption, setData]
+        [option, setOption]
     );
 
     const handleChange = useCallback(
         (event: ChangeEvent<HTMLSelectElement>) => {
             const value = Number(event.target.value);
-            if (value !== option.page) {
-                updateData(value);
-            }
+            updatePageOption(value);
         },
-        [updateData, option.page]
+        [updatePageOption]
     );
     const handleClickIcon = useCallback(
         (icon: string) => {
             const newCurrentPage: number =
                 option.page + (icon === 'prev' ? -1 : 1);
-            updateData(newCurrentPage);
+            updatePageOption(newCurrentPage);
         },
-        [updateData, option.page]
+        [updatePageOption, option.page]
     );
     return (
         <Nav id="pagination">

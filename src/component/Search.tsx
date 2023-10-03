@@ -10,7 +10,6 @@ import { ReactComponent as SearchIcon } from '../asset/search.svg';
 import SearchTag from './SearchTag';
 import SearchOption from './SearchOption';
 import { HeroProps } from './Hero';
-import { getImgData } from '../api';
 import { storageKey } from '../storageKey';
 
 const SearchTagContainer = styled.div`
@@ -56,7 +55,7 @@ const SearchOptionButton = styled.p`
 `;
 type SearchProps = HeroProps;
 const Search = (props: SearchProps) => {
-    const { setData, setOption, option } = props;
+    const { setKeyword, setOption } = props;
     const key = storageKey.searchWords;
     const [searchOption, setSearchOption] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>('');
@@ -110,21 +109,14 @@ const Search = (props: SearchProps) => {
                 // input 창 빈문자
                 setInputValue('');
                 // 검색
-                const newOption = {
-                    ...JSON.parse(JSON.stringify(option)),
+                setKeyword(keyword);
+                setOption((prev) => ({
+                    ...prev,
                     page: 1,
-                };
-
-                const data = await getImgData(keyword, newOption);
-                setOption(newOption);
-                if (data instanceof Error || !data.totalHits) {
-                    setData(null);
-                } else {
-                    setData(data);
-                }
+                }));
             }
         },
-        [option, inputValue, setData, setOption]
+        [inputValue, setKeyword, setOption]
     );
     // 로컬스토리지에 저장된 최근 검색어 적용
     useEffect(() => {
@@ -156,13 +148,7 @@ const Search = (props: SearchProps) => {
                         검색 옵션 {searchOption ? '닫기' : '열기'}
                     </SearchOptionButton>
                 </SearchInputContainer>
-                {searchOption && (
-                    <SearchOption
-                        option={option}
-                        setOption={setOption}
-                        setData={setData}
-                    />
-                )}
+                {searchOption && <SearchOption setOption={setOption} />}
             </SearchBoxContainer>
             <SearchTagContainer>
                 {searchWords &&
