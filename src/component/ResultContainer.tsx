@@ -46,13 +46,13 @@ const ResultContainer = ({ data, option, setOption }: ResultContainerProps) => {
     return (
         <Container>
             <ImageModal modal={modal} setModal={setModal} />
-            {data && (
+            {/* {data && (
                 <Pagination
                     pages={pages}
                     option={option}
                     setOption={setOption}
                 />
-            )}
+            )} */}
             <ResultsWrapper>
                 {data ? (
                     data.hits?.map((imgData) => (
