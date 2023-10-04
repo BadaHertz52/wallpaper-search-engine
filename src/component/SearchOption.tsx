@@ -40,6 +40,7 @@ const SearchOption = ({ setOption }: SearchOptionProps) => {
             const id = event.currentTarget.id;
             setOption((prev) => {
                 const newOption = JSON.parse(JSON.stringify(prev)) as Option;
+                newOption.page = 1;
                 switch (id) {
                     case 'order':
                         newOption.order = value;
