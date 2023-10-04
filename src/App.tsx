@@ -29,7 +29,13 @@ function App() {
     const [keyword, setKeyword] = useState<string>();
     const [data, setData] = useState<ResponseData | null>(null);
     const recentKeywords = localStorage.getItem(storageKey.searchWords);
-
+    const numberOfPage: number = !data
+        ? 0
+        : Math.round(data.totalHits / Number(option.perPage));
+    /**
+     * api 요청 후에 생기는 페이지 번호를 요소로하는 배열
+     */
+    const pages = new Array(numberOfPage).fill('p').map((v, i) => i + 1);
     const updateData = useCallback(async () => {
         if (keyword) {
             const imgData = await getImgData(keyword, option);
@@ -62,6 +68,7 @@ function App() {
                     data={data}
                     option={option}
                     setOption={setOption}
+                    pages={pages}
                 />
                 <Footer />
                 <ToggleThemeButton />

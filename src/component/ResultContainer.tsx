@@ -23,19 +23,18 @@ type ResultContainerProps = {
     data: ResponseData | null;
     option: Option;
     setOption: Dispatch<SetStateAction<Option>>;
+    pages: number[];
 };
-const ResultContainer = ({ data, option, setOption }: ResultContainerProps) => {
+const ResultContainer = ({
+    data,
+    option,
+    setOption,
+    pages,
+}: ResultContainerProps) => {
     const [modal, setModal] = useState<ModalState>({
         open: false,
         targetImgData: undefined,
     });
-    const pageLength: number = !data
-        ? 0
-        : Math.round(data.totalHits / Number(data.hits.length || 20));
-    /**
-     * api 요청 후에 생기는 페이지 번호를 요소로하는 배열
-     */
-    const pages = new Array(pageLength).fill('p').map((v, i) => i + 1);
 
     const showModal = (imgData: ImgData) => {
         setModal({
