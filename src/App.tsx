@@ -30,27 +30,7 @@ function App() {
     const [data, setData] = useState<ResponseData | null>(null);
     const recentKeywordsItem = localStorage.getItem(storageKey.searchWords);
     const observeTargetRef = useRef<HTMLDivElement>(null);
-    /**
-     * 기존의 키워드와 검색 옵션에서 페이지만 변경해 검색하는 무한 스크롤이 적용되는 검색인지 여부
-     */
-    const isInfiniteScroll = useMemo(() => {
-        const optionItem = sessionStorage.getItem(storageKey.option);
-        if (optionItem && recentKeywordsItem) {
-            const recentOption = JSON.parse(optionItem) as Option;
-            const recentKeyword = (
-                JSON.parse(recentKeywordsItem) as string[]
-            )[0];
-            return recentKeyword === keyword &&
-                recentOption.order === option.order &&
-                recentOption.orientation === option.orientation &&
-                recentOption.perPage === option.perPage &&
-                recentOption.page !== option.page
-                ? true
-                : false;
-        } else {
-            return false;
-        }
-    }, [option, recentKeywordsItem, keyword]);
+
     const updateData = useCallback(async () => {
         if (keyword) {
             const imgData = await getImgData(keyword, option);
@@ -58,7 +38,9 @@ function App() {
             if (imgData instanceof Error || !imgData.totalHits) {
                 setData(null);
             } else {
-                if (isInfiniteScroll) {
+                if (option.page !== 1) {
+                    // 키워드, page를 제외한 option이 바뀌면 option.page는 1로 설정되기 때문에
+                    // option.page가 1이 아닌 경우는 무한 스크롤이 적용되는 상활밖에 없음
                     setData((prev) =>
                         prev
                             ? {
@@ -72,7 +54,7 @@ function App() {
                 }
             }
         }
-    }, [keyword, option, setData, isInfiniteScroll]);
+    }, [keyword, option, setData]);
 
     const observerCallback: IntersectionObserverCallback = useCallback(
         (
