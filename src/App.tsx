@@ -30,11 +30,13 @@ function App() {
     const [data, setData] = useState<ResponseData | null>(null);
     const recentKeywordsItem = localStorage.getItem(storageKey.searchWords);
     const observeTargetRef = useRef<HTMLDivElement>(null);
-
+    const numberOfPage = data ? Math.round(data.totalHits / option.perPage) : 0;
+    const pages = new Array(numberOfPage).fill('p').map((v, i) => i + 1);
+    const showObserveTarget = option.page !== numberOfPage;
     const updateData = useCallback(async () => {
         if (keyword) {
             const imgData = await getImgData(keyword, option);
-            sessionStorage.setItem(storageKey.option, JSON.stringify(option));
+
             if (imgData instanceof Error || !imgData.totalHits) {
                 setData(null);
             } else {
@@ -71,7 +73,6 @@ function App() {
     useEffect(() => {
         updateData();
     }, [updateData, option, keyword]);
-
     useEffect(() => {
         if (!keyword) {
             // 페이지 오픈 시 , 저장된 keyword가 로컬 스토리지에 없을 때 "dog"에 대한 이미지를 가져오도록 함
@@ -86,8 +87,11 @@ function App() {
         const observer = new IntersectionObserver(observerCallback, {
             threshold: 1,
         });
-        observeTargetRef.current && observer.observe(observeTargetRef.current);
-    }, [observerCallback]);
+        if (observeTargetRef.current && showObserveTarget) {
+            observer.observe(observeTargetRef.current);
+        }
+    }, [observerCallback, showObserveTarget]);
+
     return (
         <>
             <Container>
@@ -96,8 +100,9 @@ function App() {
                     data={data}
                     option={option}
                     setOption={setOption}
+                    pages={pages}
                 />
-                <div ref={observeTargetRef}></div>
+                {showObserveTarget && <div ref={observeTargetRef}></div>}
                 <Footer />
                 <ToggleThemeButton />
             </Container>
